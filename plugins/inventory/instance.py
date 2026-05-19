@@ -103,6 +103,9 @@ instance:
   {% if instance.group %}
   group: {{ instance.group }}
   {% endif %}
+  {% if instance.project %}
+  project: {{ instance.project }}
+  {% endif %}
 
   {% if instance.tags %}
   tags:
@@ -207,7 +210,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable):
         if search:
             found = False
             # we return all items related to the query involved in the filtering
-            result = self.query_api(query, listItems=True)
+            result = self.query_api(query, listItems=True, listAll=True)
             for item in result[filter_option]:
                 # if we find the searched value as either an id or a name
                 if search in [item["id"], item["name"]]:
@@ -227,6 +230,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable):
         self.add_filter(args, "project", "listProjects", "projectid")
         self.add_filter(args, "zone", "listZones", "zoneid")
         self.add_filter(args, "vpc", "listVPCs", "vpcid")
+
+        # Make sure we list instances from ALL projects if there's not one provided.
+        #
+        # Do note - if you use a service account that's not a root admin (good idea for automation) you need to add it to each project you want enumerated here.
+
+        if "projectid" not in args:
+            args["projectid"] = -1
 
         return args
 
