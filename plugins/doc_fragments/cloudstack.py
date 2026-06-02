@@ -18,19 +18,19 @@ options:
       - API key of the CloudStack API.
       - If not given, the C(CLOUDSTACK_KEY) env variable is considered.
     type: str
-    required: true
+    required: false
   api_secret:
     description:
       - Secret key of the CloudStack API.
       - If not set, the C(CLOUDSTACK_SECRET) env variable is considered.
     type: str
-    required: true
+    required: false
   api_url:
     description:
       - URL of the CloudStack API e.g. https://cloud.example.com/client/api.
       - If not given, the C(CLOUDSTACK_ENDPOINT) env variable is considered.
     type: str
-    required: true
+    required: false
   api_http_method:
     description:
       - HTTP method used to query the API endpoint.

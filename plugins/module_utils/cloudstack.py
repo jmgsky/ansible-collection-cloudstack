@@ -349,7 +349,7 @@ class AnsibleCloudStack:
             project = os.environ.get("CLOUDSTACK_PROJECT")
         if not project:
             return None
-        args = {"account": self.get_account(key="name"), "domainid": self.get_domain(key="id")}
+        args = {"account": self.get_account(key="name"), "domainid": self.get_domain(key="id"), "listall": True}
         projects = self.query_api("listProjects", **args)
         if projects:
             for p in projects["project"]:
