@@ -9,6 +9,7 @@ authors:
   - "Jefferson Girão <jefferson@girao.net>"
   - "Gregor Riepl (@onitake)"
   - "Rafael del Valle (@rvalle)"
+  - "Josh Gordon (@jmgsky)"
 dependencies: {}
 description: "Ansible Collection for Apache CloudStack based clouds"
 documentation: ""
@@ -24,4 +25,4 @@ tags:
   - cloud
   - cloudstack
   - ngine_io
-version: 3.0.0
+version: 3.0.1
