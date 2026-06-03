@@ -60,9 +60,6 @@ class AnsibleCloudStackAPI(AnsibleModule):
         self.result = {}
 
         if direct_params is not None:
-            # When bypassing AnsibleModule.__init__ (lookup plugin path), we still
-            # need a few attributes that ansible-core touches on teardown.
-            self.cleanup_files = []
             for param, value in full_argspec.items():
                 if param in direct_params:
                     setattr(self, param, direct_params[param])
