@@ -7,14 +7,12 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-import json
 import os
 import re
 import sys
 import traceback
 
-import ansible.module_utils.basic
-from ansible.module_utils._text import to_bytes, to_native
+from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import missing_required_lib, AnsibleModule
 
 CS_IMP_ERR = None
@@ -62,20 +60,14 @@ class AnsibleCloudStackAPI(AnsibleModule):
         self.result = {}
 
         if direct_params is not None:
-            # Inject params via _ANSIBLE_ARGS so AnsibleModule._load_params picks
-            # them up, then run the real __init__ so every base-class attribute
-            # (cleanup_files, _tmpdir, etc.) gets initialized properly.
-            module_args = {}
+            # When bypassing AnsibleModule.__init__ (lookup plugin path), we still
+            # need a few attributes that ansible-core touches on teardown.
+            self.cleanup_files = []
             for param, value in full_argspec.items():
-                module_args[param] = direct_params[param] if param in direct_params else value
-            saved_ansible_args = ansible.module_utils.basic._ANSIBLE_ARGS
-            ansible.module_utils.basic._ANSIBLE_ARGS = to_bytes(
-                json.dumps({"ANSIBLE_MODULE_ARGS": module_args})
-            )
-            try:
-                super(AnsibleCloudStackAPI, self).__init__(argument_spec=full_argspec, **kwargs)
-            finally:
-                ansible.module_utils.basic._ANSIBLE_ARGS = saved_ansible_args
+                if param in direct_params:
+                    setattr(self, param, direct_params[param])
+                else:
+                    setattr(self, param, value)
         else:
             super(AnsibleCloudStackAPI, self).__init__(argument_spec=full_argspec, **kwargs)
 
