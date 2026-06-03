@@ -139,8 +139,7 @@ class AnsibleCloudStackProject(AnsibleCloudStack):
             project = self.module.params.get("name")
 
             args = {
-                "account": self.get_account(key="name"),
-                "domainid": self.get_domain(key="id"),
+                "listall": True,
                 "fetch_list": True,
             }
             projects = self.query_api("listProjects", **args)
