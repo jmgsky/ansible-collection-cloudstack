@@ -1,0 +1,12 @@
+FROM quay.io/ansible/awx-ee:24.6.1
+
+USER root
+
+RUN python3 -m pip install --no-cache-dir cs
+
+COPY . /tmp/collection
+RUN ansible-galaxy collection build /tmp/collection --output-path /tmp \
+ && ansible-galaxy collection install --force /tmp/ngine_io-cloudstack-*.tar.gz \
+ && rm -rf /tmp/collection /tmp/ngine_io-cloudstack-*.tar.gz
+
+USER 1000
